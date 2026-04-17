@@ -475,6 +475,14 @@ if(typeof Chart === 'undefined' && typeof module !== 'undefined' && module.expor
 
 
 /* ── utils ── */
+// 图片代理：GitHub Pages 环境下绕过微信CDN防盗链
+function proxyImg(url){
+  if(!url) return url;
+  if(window.location.protocol==='file:') return url;  // 本地直接用原URL
+  if(url.indexOf('wsrv.nl')>=0) return url;           // 已代理不重复处理
+  var clean=url.replace(/^https?:\/\//,'');
+  return 'https://wsrv.nl/?url='+encodeURIComponent(clean)+'&n=-1';
+}
 function f(n){if(n>=1e8)return(n/1e8).toFixed(1)+'亿';if(n>=1e4)return(n/1e4).toFixed(1)+'万';return n?n.toLocaleString():'0';}
 function p(n){return(+n).toFixed(2)+'%';}
 function yuan(n){if(n>=10000)return'¥'+(n/10000).toFixed(1)+'万';return'¥'+Math.round(n).toLocaleString();}
@@ -538,7 +546,7 @@ function renderKbar(id, items, accentColor){
 function rankItem(m, mainField, mainLabel, accentColor, tagClass){
   var rnCls = m.rank===1?'rn1':m.rank===2?'rn2':m.rank===3?'rn3':'rno';
   var imgH = m.img
-    ? '<img class="ri-img" src="'+m.img+'" alt="" onerror="this.outerHTML=\'<div class=ri-img-ph>无图</div>\'">'
+    ? '<img class="ri-img" src="'+proxyImg(m.img)+'" alt="" onerror="this.outerHTML=\'<div class=ri-img-ph>无图</div>\'">'
     : '<div class="ri-img-ph">#'+m.id+'</div>';
   var mainVal = mainField==='cost' ? yuan(m[mainField]) : f(m[mainField]);
   return '<div class="rank-item">'
@@ -593,7 +601,7 @@ function renderD7(ch){
     var rnColors=['rn1','rn2','rn3'];
     day.items.forEach(function(it,i){
       var imgH = it.img
-        ? '<img class="d7-img" src="'+it.img+'" alt="" onerror="this.outerHTML=\'<div class=d7-img-ph></div>\'">'
+        ? '<img class="d7-img" src="'+proxyImg(it.img)+'" alt="" onerror="this.outerHTML=\'<div class=d7-img-ph></div>\'">'
         : '<div class="d7-img-ph"></div>';
       html+='<div class="d7-item">'
         +'<div class="d7-rn '+(rnColors[i]||'rno')+'">'+(i+1)+'</div>'
@@ -710,7 +718,7 @@ function renderMats(ch){
   var html='';
   d.forEach(function(m){
     var imgH=m.img
-      ?'<img class="mc-img" src="'+m.img+'" alt="" loading="lazy" onerror="this.outerHTML=\'<div class=mc-img-ph>无图片</div>\'">'
+      ?'<img class="mc-img" src="'+proxyImg(m.img)+'" alt="" loading="lazy" onerror="this.outerHTML=\'<div class=mc-img-ph>无图片</div>\'">'
       :'<div class="mc-img-ph">#'+m.id+'</div>';
     var rkCls=m.rank===1?'r1':m.rank===2?'r2':m.rank===3?'r3':'ro';
     html+='<div class="mc" onclick="openModal(\''+m.id+'\',\''+ch+'\')">'
@@ -742,7 +750,7 @@ function openModal(id,ch){
   var chN={gzh:'微信公众号',rd:'微信红点',qq:'手Q'}[ch];
   document.getElementById('mo-id').innerHTML='<span style="color:'+ac+'">创意ID: '+m.id+'</span>&nbsp;&nbsp;|&nbsp;&nbsp;'+chN+'&nbsp;&nbsp;|&nbsp;&nbsp;排名 #'+m.rank;
   document.getElementById('mo-title').textContent=m.title||'（无标题）';
-  var img=document.getElementById('mo-img');img.src=m.img||'';img.style.display=m.img?'block':'none';
+  var img=document.getElementById('mo-img');img.src=proxyImg(m.img)||'';img.style.display=m.img?'block':'none';
   var mets=[
     {v:f(m.exp),l:'曝光量'},{v:f(m.clk),l:'点击量'},{v:p(m.ctr),l:'外层CTR'},
     {v:f(m.rsv),l:'预约量'},{v:p(m.cvr),l:'CVR'},
@@ -810,7 +818,7 @@ function setQQPos(pos, btn){
     d7.forEach(function(day){
       h2+='<div class="d7-card"><div class="d7-date">'+day.date+'<span class="d7-total">当日总预约: <b>'+f(day.total)+'</b></span></div>';
       (day.items||[]).forEach(function(item,idx){
-        var imgH=item.img?'<img src="'+item.img+'" style="width:40px;height:40px;object-fit:cover;border-radius:6px;flex-shrink:0;" onerror="this.style.display=\'none\'">':'<div style="width:40px;height:40px;background:var(--c2);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--sub)">#'+item.id+'</div>';
+        var imgH=item.img?'<img src="'+proxyImg(item.img)+'" style="width:40px;height:40px;object-fit:cover;border-radius:6px;flex-shrink:0;" onerror="this.style.display=\'none\'">':'<div style="width:40px;height:40px;background:var(--c2);border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--sub)">#'+item.id+'</div>';
         h2+='<div class="d7-item">'
           +'<span class="d7-rank r'+(idx+1)+'">'+(idx+1)+'</span>'
           +imgH
@@ -1004,7 +1012,7 @@ function renderCopyBoard(){
     var sortedItems = row.items.slice().sort(function(a,b){return (b.rsv||0)-(a.rsv||0);});
     var thumbs = sortedItems.slice(0,8).map(function(m){
       if(m.img){
-        return '<img class="copy-mat-thumb" src="'+m.img+'" title="#'+m.id+' '+m.title+'" onerror="this.outerHTML=\'<div class=copy-mat-ph>无图</div>\'" onclick="openModal(\''+m.id+'\',\''+_copyCh+'\')">';
+        return '<img class="copy-mat-thumb" src="'+proxyImg(m.img)+'" title="#'+m.id+' '+m.title+'" onerror="this.outerHTML=\'<div class=copy-mat-ph>无图</div>\'" onclick="openModal(\''+m.id+'\',\''+_copyCh+'\')">';
       }
       return '<div class="copy-mat-ph">#'+m.id+'</div>';
     }).join('');
