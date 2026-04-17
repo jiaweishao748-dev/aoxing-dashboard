@@ -1,0 +1,5 @@
+# 只跟踪看板文件，忽略其他所有内容
+*
+!.gitignore
+!dashboard_v6.html
+!dashboard_data.js
