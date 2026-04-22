@@ -1,0 +1,11 @@
+pages:
+  stage: deploy
+  script:
+    - mkdir -p public
+    - cp dashboard_v6.html public/index.html
+    - cp dashboard_data.js public/dashboard_data.js
+  artifacts:
+    paths:
+      - public
+  only:
+    - main

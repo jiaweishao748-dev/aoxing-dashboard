@@ -26,6 +26,390 @@
 //# sourceMappingURL=chart.umd.js.map
 </script>
 <style>
+/* ══ v7 UI UPGRADE ══ */
+:root{
+  --bg:#0d0f17;
+  --card:#141826;
+  --card2:#1a1f30;
+  --bd:rgba(255,255,255,0.07);
+  --bd2:rgba(255,255,255,0.12);
+  --tx:#eef0f6;
+  --sub:rgba(255,255,255,0.38);
+  --sub2:rgba(255,255,255,0.55);
+  --gzh:#7c6aff;
+  --rd:#00e5c5;
+  --qq:#ffb800;
+  --c2:#1e2438;
+  --c3:#252d42;
+  --acc:#7c6aff;
+
+  /* 新增：玻璃卡片 / 渐变 */
+  --glass:rgba(255,255,255,0.03);
+  --glow-gzh:rgba(124,106,255,0.18);
+  --glow-rd:rgba(0,229,197,0.15);
+  --glow-qq:rgba(255,184,0,0.15);
+
+  --r-sm:10px;
+  --r-md:14px;
+  --r-lg:18px;
+  --r-xl:22px;
+}
+
+/* body */
+body{
+  background:var(--bg);
+  color:var(--tx);
+  font-family:-apple-system,BlinkMacSystemFont,'Inter','PingFang SC','Helvetica Neue',sans-serif;
+  font-size:13px;
+  line-height:1.5;
+  min-height:100vh;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.12);border-radius:99px;}
+::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,0.22);}
+
+/* ── NAV 升级 ── */
+.nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;gap:16px;
+  padding:0 28px;height:56px;
+  background:rgba(13,15,23,0.82);
+  backdrop-filter:blur(20px) saturate(1.6);
+  -webkit-backdrop-filter:blur(20px) saturate(1.6);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  box-shadow:0 1px 0 rgba(255,255,255,0.04),0 8px 32px rgba(0,0,0,0.4);
+}
+.nav-logo{
+  font-size:14px;font-weight:700;
+  background:linear-gradient(135deg,#a78fff 0%,#7c6aff 50%,#4fc3f7 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  letter-spacing:0.3px;flex-shrink:0;
+}
+.nav-logo em{font-style:normal;opacity:.4;}
+.tabs{display:flex;gap:4px;background:rgba(255,255,255,0.04);padding:4px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);}
+.tab{
+  padding:6px 18px;border-radius:8px;border:none;
+  background:transparent;color:rgba(255,255,255,0.45);
+  font-size:12px;font-weight:500;cursor:pointer;
+  transition:all 0.18s ease;white-space:nowrap;letter-spacing:0.3px;
+}
+.tab:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);}
+.tab.on{
+  background:linear-gradient(135deg,#4A90E2 0%,#7B6CF6 100%);
+  color:#fff;font-weight:700;
+  box-shadow:0 2px 12px rgba(74,144,226,0.4);
+}
+.tab[data-ch="wx"].on{background:linear-gradient(135deg,#7c6aff,#a78fff);}
+.tab[data-ch="rd"].on{background:linear-gradient(135deg,#00c4a8,#00e5c5);color:#0d1a17;}
+.tab[data-ch="qq"].on{background:linear-gradient(135deg,#e69500,#ffb800);color:#1a1000;}
+.tab[data-ch="copy"].on{background:linear-gradient(135deg,#3d7ede,#5fa8ff);}
+.nav-meta{font-size:11px;color:var(--sub);margin-left:auto;white-space:nowrap;}
+
+/* ── NOTICE BAR 升级 ── */
+#notice-bar{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 28px;
+  background:linear-gradient(90deg,rgba(74,144,226,0.10) 0%,rgba(124,106,255,0.06) 60%,transparent 100%);
+  border-bottom:1px solid rgba(74,144,226,0.15);
+  font-size:12px;color:rgba(255,255,255,0.6);
+  margin-bottom:0;
+}
+#notice-bar .notice-icon{font-size:14px;flex-shrink:0;opacity:.7;}
+#notice-bar .notice-time{color:#7c9fff;font-weight:600;}
+
+/* ── PAGE ── */
+.pg{display:none;max-width:1680px;margin:0 auto;padding:24px 28px 48px;}
+
+/* ── KPI BAR 升级 ── */
+.kbar{
+  display:flex;flex-wrap:wrap;
+  background:linear-gradient(135deg,var(--card) 0%,var(--card2) 100%);
+  border:1px solid var(--bd);border-radius:var(--r-lg);
+  margin-bottom:22px;overflow:hidden;
+  box-shadow:0 4px 24px rgba(0,0,0,0.3);
+}
+.ki{
+  flex:1;min-width:130px;padding:16px 22px;
+  border-right:1px solid rgba(255,255,255,0.05);
+  position:relative;transition:background .2s;
+}
+.ki:hover{background:rgba(255,255,255,0.025);}
+.ki:last-child{border-right:none;}
+.ki .v{font-size:22px;font-weight:800;line-height:1.15;letter-spacing:-0.5px;}
+.ki .l{font-size:9px;color:var(--sub);margin-top:4px;text-transform:uppercase;letter-spacing:.08em;font-weight:500;}
+
+/* ── RANK SECTION 升级 ── */
+.rank-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.rank-card{
+  background:var(--card);border:1px solid var(--bd);border-radius:var(--r-lg);
+  padding:18px 20px;
+  box-shadow:0 2px 16px rgba(0,0,0,0.2);
+  transition:box-shadow .2s;
+}
+.rank-card:hover{box-shadow:0 4px 28px rgba(0,0,0,0.35);}
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.sec-title{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
+.sec-sub{font-size:10px;color:var(--sub);background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:99px;}
+.rank-item{
+  display:flex;align-items:center;gap:12px;
+  padding:9px 8px;border-bottom:1px solid rgba(255,255,255,0.04);
+  cursor:pointer;transition:all .18s;border-radius:10px;
+}
+.rank-item:last-child{border-bottom:none;}
+.rank-item:hover{background:rgba(255,255,255,0.05);transform:translateX(2px);}
+.rn{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
+.rn1{background:linear-gradient(135deg,#ffd700,#ffb300);color:#000;box-shadow:0 2px 8px rgba(255,183,0,0.4);}
+.rn2{background:linear-gradient(135deg,#d4d4d4,#a8a8a8);color:#000;}
+.rn3{background:linear-gradient(135deg,#e8956a,#c47846);color:#fff;}
+.rno{background:rgba(255,255,255,.08);color:var(--sub);}
+.ri-img{width:52px;height:52px;object-fit:cover;border-radius:8px;background:var(--c2);flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.ri-img-ph{width:52px;height:52px;border-radius:8px;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--sub);flex-shrink:0;}
+.ri-info{flex:1;min-width:0;}
+.ri-id{font-size:10px;font-family:monospace;font-weight:700;margin-bottom:3px;opacity:.7;}
+.ri-title{font-size:11px;color:var(--sub2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:5px;}
+.ri-metrics{display:flex;gap:12px;}
+.ri-m{font-size:11px;font-weight:600;}
+.ri-ml{font-size:9px;color:var(--sub);margin-left:2px;}
+.ri-main{font-size:19px;font-weight:800;flex-shrink:0;text-align:right;line-height:1.1;}
+.ri-main-l{font-size:9px;color:var(--sub);margin-top:3px;text-align:right;}
+
+/* ── CHART CARDS 升级 ── */
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
+.chart-card{
+  background:var(--card);border:1px solid var(--bd);border-radius:var(--r-lg);
+  padding:20px 22px;
+  box-shadow:0 2px 16px rgba(0,0,0,0.2);
+}
+.chart-title{
+  font-size:10px;color:var(--sub);font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;
+  display:flex;align-items:center;gap:6px;
+}
+.chart-title::before{content:'';display:inline-block;width:3px;height:12px;border-radius:2px;background:var(--gzh);}
+
+/* ── 7-DAY CARDS 升级 ── */
+.d7-title{font-size:13px;font-weight:700;margin-bottom:14px;color:var(--tx);display:flex;align-items:center;gap:8px;}
+.d7-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin-bottom:24px;}
+.d7-card{
+  background:var(--card);border:1px solid var(--bd);border-radius:var(--r-md);
+  padding:14px 16px;
+  transition:box-shadow .2s,border-color .2s;
+}
+.d7-card:hover{border-color:var(--bd2);box-shadow:0 4px 20px rgba(0,0,0,0.3);}
+.d7-hd{display:flex;align-items:baseline;gap:8px;margin-bottom:12px;}
+.d7-date{font-size:12px;font-weight:700;color:var(--tx);}
+.d7-total{font-size:11px;color:var(--sub);}
+.d7-total b{color:var(--sub2);font-size:13px;}
+.d7-item{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.d7-rn{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
+.d7-img{width:38px;height:38px;object-fit:cover;border-radius:6px;background:var(--c2);flex-shrink:0;box-shadow:0 2px 6px rgba(0,0,0,0.3);}
+.d7-img-ph{width:38px;height:38px;border-radius:6px;background:var(--c2);flex-shrink:0;}
+.d7-ititle{font-size:10px;color:var(--sub2);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.d7-val{font-size:11px;font-weight:700;flex-shrink:0;}
+.d7-pct{font-size:9px;color:var(--sub);flex-shrink:0;}
+
+/* ── FILTER BAR 升级 ── */
+.filter-bar{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;align-items:center;}
+.filter-bar input{
+  background:var(--c2);border:1px solid var(--bd);border-radius:10px;
+  padding:8px 14px;color:var(--tx);font-size:12px;width:250px;outline:none;
+  transition:border-color .15s,box-shadow .15s;
+}
+.filter-bar input::placeholder{color:var(--sub);}
+.filter-bar input:focus{border-color:var(--gzh);box-shadow:0 0 0 3px rgba(124,106,255,0.12);}
+.sb{
+  padding:6px 14px;border-radius:8px;border:1px solid var(--bd);
+  cursor:pointer;font-size:11px;color:var(--sub);background:none;
+  transition:all .15s;font-weight:500;
+}
+.sb:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.8);border-color:var(--bd2);}
+.sb.on{color:#fff;border-color:transparent;}
+.sb-gzh.on{background:linear-gradient(135deg,#6a5aff,#7c6aff);box-shadow:0 2px 8px rgba(124,106,255,0.3);}
+.sb-rd.on{background:linear-gradient(135deg,#00c4a8,#00e5c5);color:#0d1a17;}
+.sb-qq.on{background:linear-gradient(135deg,#e69500,#ffb800);color:#1a1000;}
+#rc-gzh,#rc-rd,#rc-qq{font-size:11px;color:var(--sub);margin-left:auto;padding:4px 10px;background:rgba(255,255,255,0.04);border-radius:6px;}
+
+/* ── MAT GRID 升级 ── */
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;}
+.mc{
+  background:var(--card);border:1px solid var(--bd);border-radius:var(--r-md);
+  overflow:hidden;cursor:pointer;
+  transition:transform .18s cubic-bezier(.34,1.56,.64,1),box-shadow .18s,border-color .18s;
+}
+.mc:hover{
+  transform:translateY(-5px) scale(1.01);
+  box-shadow:0 12px 32px rgba(0,0,0,0.5);
+  border-color:rgba(255,255,255,0.14);
+}
+.mc-iw{position:relative;}
+.mc-img{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--c2);display:block;}
+.mc-img-ph{width:100%;aspect-ratio:4/3;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--sub);}
+
+/* ID/rank tag 升级 */
+.id-tag{
+  position:absolute;top:8px;left:8px;
+  background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);
+  border:1px solid rgba(124,106,255,.45);color:var(--gzh);
+  font-size:9px;font-weight:700;padding:2px 7px;border-radius:6px;font-family:monospace;
+  letter-spacing:.03em;
+}
+.id-tag-rd{border-color:rgba(0,229,197,.45);color:var(--rd);}
+.id-tag-qq{border-color:rgba(255,184,0,.45);color:var(--qq);}
+.rkb{
+  position:absolute;top:8px;right:8px;
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:800;
+  box-shadow:0 2px 6px rgba(0,0,0,0.4);
+}
+.r1{background:linear-gradient(135deg,#ffd700,#ffb300);color:#000;}
+.r2{background:linear-gradient(135deg,#d4d4d4,#a8a8a8);color:#000;}
+.r3{background:linear-gradient(135deg,#e8956a,#c47846);color:#fff;}
+.ro{background:rgba(255,255,255,.1);color:var(--sub);}
+
+/* mat body */
+.mc-body{padding:12px 14px;}
+.mc-title{
+  font-size:10px;color:var(--sub2);margin-bottom:10px;line-height:1.55;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:3em;
+}
+.mg3{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:4px;}
+.mg2{display:grid;grid-template-columns:repeat(2,1fr);gap:4px;margin-bottom:6px;}
+.mm{
+  text-align:center;padding:6px 2px;
+  background:var(--c2);border-radius:7px;
+  transition:background .15s;
+}
+.mc:hover .mm{background:var(--c3);}
+.mm .v{font-size:11px;font-weight:700;line-height:1.2;}
+.mm .l{font-size:8px;color:var(--sub);margin-top:2px;letter-spacing:.02em;}
+
+/* ── MODAL 升级 ── */
+.ov{
+  display:none;position:fixed;inset:0;z-index:999;
+  background:rgba(0,0,0,0.88);backdrop-filter:blur(12px);
+  align-items:center;justify-content:center;
+}
+.ov.open{display:flex;}
+.mo{
+  background:linear-gradient(160deg,var(--card) 0%,var(--card2) 100%);
+  border:1px solid rgba(255,255,255,0.09);border-radius:var(--r-xl);
+  max-width:920px;width:94%;max-height:92vh;overflow-y:auto;
+  padding:28px 30px;
+  box-shadow:0 32px 80px rgba(0,0,0,0.7),0 0 0 1px rgba(255,255,255,0.04);
+}
+.mo-close{
+  float:right;background:rgba(255,255,255,0.07);border:none;
+  color:var(--sub2);font-size:18px;cursor:pointer;
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;float:right;
+}
+.mo-close:hover{background:rgba(255,255,255,0.14);color:var(--tx);}
+.mo-id{font-size:12px;font-family:monospace;font-weight:700;margin-bottom:6px;opacity:.75;}
+.mo-title{font-size:15px;font-weight:700;line-height:1.6;margin-bottom:16px;color:var(--tx);}
+.mo-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:16px;}
+.mo-img{width:100%;border-radius:12px;object-fit:contain;max-height:360px;background:var(--c2);box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+.m6{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.mcell{
+  background:var(--c2);border-radius:10px;padding:14px 10px;text-align:center;
+  border:1px solid rgba(255,255,255,0.04);
+  transition:background .15s;
+}
+.mcell:hover{background:var(--c3);}
+.mcell .v{font-size:18px;font-weight:800;line-height:1.1;}
+.mcell .l{font-size:9px;color:var(--sub);margin-top:4px;letter-spacing:.04em;}
+.url-box{
+  margin-top:12px;background:var(--c2);border-radius:8px;
+  padding:10px 14px;font-size:9px;font-family:monospace;
+  color:var(--sub);word-break:break-all;cursor:pointer;
+  border:1px solid rgba(255,255,255,0.05);
+  transition:border-color .15s;
+}
+.url-box:hover{border-color:rgba(255,255,255,0.15);color:var(--sub2);}
+
+/* ── SUB TABS 升级 ── */
+.sub-tab{
+  padding:5px 14px;border-radius:7px;
+  border:1px solid rgba(255,255,255,0.1);
+  background:transparent;color:rgba(255,255,255,0.45);
+  font-size:12px;cursor:pointer;font-weight:500;
+  transition:all .15s;
+}
+.sub-tab:hover{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.8);border-color:rgba(255,255,255,0.18);}
+.sub-tab.on{
+  background:var(--gzh);color:#fff;border-color:transparent;
+  box-shadow:0 2px 8px rgba(124,106,255,0.3);
+}
+[data-sub="rd"].sub-tab.on,[data-copy-ch="rd"].sub-tab.on{background:var(--rd);color:#0d1a17;border-color:transparent;box-shadow:0 2px 8px rgba(0,229,197,0.25);}
+[data-copy-ch="qq"].sub-tab.on{background:var(--qq);color:#1a1000;border-color:transparent;}
+
+/* ── DATE FILTER 升级 ── */
+.date-filter-row{display:flex;align-items:center;flex-wrap:wrap;gap:10px;padding:6px 0 8px;margin-bottom:6px;}
+.date-filter{display:flex;align-items:center;gap:6px;}
+.date-filter input[type=date]{
+  background:var(--c2);border:1px solid var(--bd);
+  border-radius:7px;padding:5px 9px;color:rgba(255,255,255,0.75);font-size:12px;
+  cursor:pointer;transition:border-color .15s,box-shadow .15s;
+}
+.date-filter input[type=date]:focus{outline:none;border-color:var(--gzh);box-shadow:0 0 0 3px rgba(124,106,255,0.1);}
+.date-filter .btn-clear{
+  padding:5px 11px;border-radius:7px;border:1px solid rgba(255,255,255,0.1);
+  background:transparent;color:rgba(255,255,255,0.4);font-size:11px;cursor:pointer;
+  transition:all .15s;
+}
+.date-filter .btn-clear:hover{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.75);}
+
+/* ── COPY TABLE 升级 ── */
+.copy-table{width:100%;border-collapse:separate;border-spacing:0;font-size:12px;}
+.copy-table th{
+  padding:10px 12px;text-align:left;color:var(--sub);font-weight:600;
+  border-bottom:1px solid rgba(255,255,255,0.07);white-space:nowrap;
+  font-size:10px;letter-spacing:.05em;text-transform:uppercase;
+  position:sticky;top:56px;background:var(--bg);z-index:2;
+}
+.copy-table td{padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.04);vertical-align:middle;}
+.copy-table tr:hover td{background:rgba(255,255,255,0.025);}
+.copy-table tbody tr:last-child td{border-bottom:none;}
+.copy-rank{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;font-size:11px;font-weight:700;flex-shrink:0;}
+.copy-rank.r1{background:linear-gradient(135deg,#ffd700,#ffb300);color:#000;}
+.copy-rank.r2{background:linear-gradient(135deg,#d4d4d4,#a8a8a8);color:#000;}
+.copy-rank.r3{background:linear-gradient(135deg,#e8956a,#c47846);color:#fff;}
+.copy-rank.ro{background:rgba(255,255,255,0.08);color:var(--sub);}
+.copy-title-cell{display:flex;align-items:center;gap:10px;}
+.copy-val{font-weight:700;color:var(--tx);}
+.copy-sub{font-size:11px;color:var(--sub2);}
+.copy-bar-wrap{height:3px;background:rgba(255,255,255,0.07);border-radius:2px;margin-top:4px;width:80px;}
+.copy-bar{height:3px;border-radius:2px;}
+.copy-empty{padding:48px;text-align:center;color:var(--sub);font-size:13px;}
+.copy-mat-thumb{width:32px;height:32px;object-fit:cover;border-radius:4px;cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.copy-mat-thumb:hover{transform:scale(1.35);z-index:10;position:relative;box-shadow:0 4px 12px rgba(0,0,0,0.5);}
+.copy-mat-ph{width:32px;height:32px;background:rgba(255,255,255,0.07);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--sub);}
+
+/* 文案展开 */
+.copy-title-text{color:rgba(255,255,255,0.85);line-height:1.45;word-break:break-all;cursor:pointer;font-size:13px;}
+.copy-title-text.collapsed{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden;}
+.copy-title-text.collapsed::after{content:' ▾';font-size:10px;color:rgba(255,255,255,0.25);}
+.copy-title-text.expanded::after{content:' ▴';font-size:10px;color:rgba(255,255,255,0.25);}
+
+/* ── 响应式 ── */
+@media(max-width:960px){
+  .rank-row,.charts-row{grid-template-columns:1fr;}
+  .mo-grid{grid-template-columns:1fr;}
+  .m6{grid-template-columns:repeat(2,1fr);}
+  .pg{padding:16px 16px 40px;}
+  .nav{padding:0 16px;}
+}
+
+/* ── 微动效 ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+.kbar,.rank-card,.chart-card,.d7-card{animation:fadeUp .3s ease both;}
+/* ══ end v7 UI UPGRADE ══ */
+
 :root{--bg:#090b0f;--card:#10141c;--c2:#161b27;--bd:#1e2535;
   --gzh:#7c6aff;--rd:#00e5c5;--qq:#ff9f43;--tx:#dde4f0;--sub:#6b7a99;--gold:#ffd700;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -72,212 +456,44 @@ body{background:var(--bg);color:var(--tx);font-family:-apple-system,"PingFang SC
 .tab[data-ch="rd"].on{background:var(--rd);color:#000;}
 .tab[data-ch="qq"].on{background:var(--qq);color:#000;}
 .nav-meta{font-size:11px;color:var(--sub);}
-/* PAGE */
-.pg{display:none;max-width:1640px;margin:0 auto;padding:20px 24px 40px;}
-.pg.on{display:block;}
-/* KPI BAR */
-.kbar{display:flex;flex-wrap:wrap;background:var(--card);border:1px solid var(--bd);border-radius:14px;margin-bottom:20px;overflow:hidden;}
-.ki{flex:1;min-width:120px;padding:14px 20px;border-right:1px solid var(--bd);}
-.ki:last-child{border-right:none;}
-.ki .v{font-size:20px;font-weight:800;}.ki .l{font-size:9px;color:var(--sub);margin-top:3px;text-transform:uppercase;letter-spacing:.05em;}
-/* RANK SECTION */
-.rank-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
-.rank-card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 20px;}
-.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
-.sec-title{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
-.sec-sub{font-size:10px;color:var(--sub);}
-.rank-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd);}
-.rank-item:last-child{border-bottom:none;}
-.rn{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
-.rn1{background:#ffd700;color:#000;}.rn2{background:#c0c0c0;color:#000;}.rn3{background:#cd7f32;color:#fff;}.rno{background:rgba(255,255,255,.1);color:var(--sub);}
-.ri-img{width:52px;height:52px;object-fit:cover;border-radius:7px;background:var(--c2);flex-shrink:0;}
-.ri-img-ph{width:52px;height:52px;border-radius:7px;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--sub);flex-shrink:0;}
-.ri-info{flex:1;min-width:0;}
-.ri-id{font-size:10px;font-family:monospace;font-weight:700;margin-bottom:3px;}
-.ri-title{font-size:11px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:4px;}
-.ri-metrics{display:flex;gap:10px;}
-.ri-m{font-size:11px;font-weight:700;} .ri-ml{font-size:9px;color:var(--sub);margin-left:2px;}
-.ri-main{font-size:18px;font-weight:800;flex-shrink:0;text-align:right;}
-.ri-main-l{font-size:9px;color:var(--sub);margin-top:2px;text-align:right;}
-/* CHARTS ROW */
-.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;}
-.chart-card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:18px 20px;}
-.chart-title{font-size:11px;color:var(--sub);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;}
-/* 7-DAY DETAIL */
-.d7-title{font-size:13px;font-weight:700;margin-bottom:14px;}
-.d7-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:20px;}
-.d7-card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:14px;}
-.d7-hd{display:flex;align-items:baseline;gap:8px;margin-bottom:10px;}
-.d7-date{font-size:12px;font-weight:700;}
-.d7-total{font-size:11px;color:var(--sub);}
-.d7-total b{color:var(--tx);font-size:13px;}
-.d7-item{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
-.d7-rn{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0;}
-.d7-img{width:36px;height:36px;object-fit:cover;border-radius:5px;background:var(--c2);flex-shrink:0;}
-.d7-img-ph{width:36px;height:36px;border-radius:5px;background:var(--c2);flex-shrink:0;}
-.d7-ititle{font-size:10px;color:var(--sub);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.d7-val{font-size:11px;font-weight:700;flex-shrink:0;}
-.d7-pct{font-size:9px;color:var(--sub);flex-shrink:0;}
-/* MAT GRID */
-.filter-bar{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
-.filter-bar input{background:var(--c2);border:1px solid var(--bd);border-radius:8px;padding:7px 14px;color:var(--tx);font-size:12px;width:240px;outline:none;}
-.filter-bar input:focus{border-color:var(--gzh);}
-.sb{padding:6px 14px;border-radius:8px;border:1px solid var(--bd);cursor:pointer;font-size:11px;color:var(--sub);background:none;}
-.sb.on,.sb:hover{color:#fff;border-color:transparent;}
-.sb-gzh.on{background:var(--gzh);}.sb-rd.on{background:var(--rd);color:#000;}.sb-qq.on{background:var(--qq);color:#000;}
-#rc-gzh,#rc-rd,#rc-qq{font-size:11px;color:var(--sub);margin-left:auto;}
-.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:13px;}
-.mc{background:var(--card);border:1px solid var(--bd);border-radius:12px;overflow:hidden;cursor:pointer;transition:transform .15s,box-shadow .15s;}
-.mc:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.4);}
-.mc-iw{position:relative;}
-.mc-img{width:100%;aspect-ratio:4/3;object-fit:cover;background:var(--c2);display:block;}
-.mc-img-ph{width:100%;aspect-ratio:4/3;background:var(--c2);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--sub);}
-.id-tag{position:absolute;top:7px;left:7px;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);border:1px solid rgba(124,106,255,.5);color:var(--gzh);font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;font-family:monospace;}
-.id-tag-rd{border-color:rgba(0,229,197,.5);color:var(--rd);}
-.id-tag-qq{border-color:rgba(255,159,67,.5);color:var(--qq);}
-.rkb{position:absolute;top:7px;right:7px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;}
-.r1{background:#ffd700;color:#000;}.r2{background:#c0c0c0;color:#000;}.r3{background:#cd7f32;color:#fff;}.ro{background:rgba(255,255,255,.1);color:var(--sub);}
-.mc-body{padding:11px 13px;}
-.mc-title{font-size:10px;color:var(--sub);margin-bottom:8px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:2.8em;}
-.mg3{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-bottom:4px;}
-.mg2{display:grid;grid-template-columns:repeat(2,1fr);gap:3px;margin-bottom:6px;}
-.mm{text-align:center;padding:5px 0;background:var(--c2);border-radius:5px;}
-.mm .v{font-size:11px;font-weight:700;}.mm .l{font-size:8px;color:var(--sub);margin-top:1px;}
-/* MODAL */
-.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.86);z-index:999;align-items:center;justify-content:center;}
-.ov.open{display:flex;}
-.mo{background:var(--card);border:1px solid var(--bd);border-radius:16px;max-width:900px;width:94%;max-height:92vh;overflow-y:auto;padding:26px;}
-.mo-close{float:right;background:none;border:none;color:var(--sub);font-size:22px;cursor:pointer;}
-.mo-id{font-size:12px;font-family:monospace;font-weight:700;margin-bottom:5px;}
-.mo-title{font-size:14px;font-weight:700;line-height:1.6;margin-bottom:14px;}
-.mo-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:14px;}
-.mo-img{width:100%;border-radius:10px;object-fit:contain;max-height:360px;background:var(--c2);}
-.m6{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:12px;}
-.mcell{background:var(--c2);border-radius:9px;padding:12px;text-align:center;}
-.mcell .v{font-size:17px;font-weight:800;}.mcell .l{font-size:9px;color:var(--sub);margin-top:3px;}
-.url-box{margin-top:10px;background:var(--c2);border-radius:7px;padding:9px 12px;font-size:9px;font-family:monospace;color:var(--sub);word-break:break-all;cursor:pointer;}
-@media(max-width:900px){.rank-row,.charts-row{grid-template-columns:1fr;}.mo-grid{grid-template-columns:1fr;}.m6{grid-template-columns:repeat(2,1fr);}}
 
-.sub-tab-bar {
-  display: flex;
-  gap: 8px;
-  margin: 0 0 24px 0;
-  padding: 6px;
-  background: rgba(255,255,255,0.04);
-  border-radius: 14px;
-  flex-wrap: wrap;
-  align-items: center;
-  border: 1px solid rgba(255,255,255,0.06);
-}
-.sub-tab {
-  padding: 9px 20px;
-  border-radius: 10px;
-  border: none;
-  background: transparent;
-  color: rgba(255,255,255,0.4);
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.18s ease;
-  white-space: nowrap;
-  letter-spacing: 0.3px;
-  line-height: 1.4;
-}
-.sub-tab:hover {
-  background: rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.75);
-}
-.sub-tab.on {
-  background: linear-gradient(135deg, #4A90E2 0%, #7B6CF6 100%);
-  color: #fff;
-  font-weight: 700;
-  box-shadow: 0 3px 12px rgba(74,144,226,0.35);
-}
 
-/* ── 公告栏 ── */
-#notice-bar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 20px;
-  margin-bottom: 20px;
-  background: linear-gradient(90deg, rgba(74,144,226,0.12), rgba(74,144,226,0.06));
-  border-left: 3px solid #4A90E2;
-  border-radius: 0 8px 8px 0;
-  font-size: 13px;
-  color: rgba(255,255,255,0.75);
-  line-height: 1.5;
-}
-#notice-bar .notice-icon {
-  font-size: 16px;
-  flex-shrink: 0;
-}
-#notice-bar .notice-time {
-  color: #4A90E2;
-  font-weight: 600;
-}
 
-/* 日期筛选 */
-.date-filter{display:flex;align-items:center;gap:6px;margin-left:auto;}
-.date-filter input[type=date]{
-  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
-  border-radius:6px;padding:4px 8px;color:rgba(255,255,255,0.75);font-size:12px;
-  cursor:pointer;
-}
-.date-filter input[type=date]:focus{outline:none;border-color:#4A90E2;}
-.date-filter .btn-clear{
-  padding:4px 10px;border-radius:6px;border:1px solid rgba(255,255,255,0.15);
-  background:transparent;color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;
-}
-.date-filter .btn-clear:hover{background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.8);}
 
-/* 微信子Tab */
-.sub-tab{padding:5px 14px;border-radius:6px;border:1px solid rgba(255,255,255,0.12);background:transparent;color:rgba(255,255,255,0.5);font-size:12px;cursor:pointer;font-weight:500;transition:all .15s;}
-.sub-tab:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.8);}
-.sub-tab.on{background:var(--gzh);color:#fff;border-color:var(--gzh);}
-[data-sub="rd"].sub-tab.on{background:var(--rd);color:#000;border-color:var(--rd);}
 
-/* 日期筛选行 */
-.date-filter-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:6px 0 4px;margin-bottom:4px;}
 
-/* 文案看板 */
-.copy-table{width:100%;border-collapse:collapse;font-size:12px;}
-.copy-table th{padding:8px 10px;text-align:left;color:var(--sub);font-weight:500;border-bottom:1px solid rgba(255,255,255,0.08);white-space:nowrap;}
-.copy-table td{padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.05);vertical-align:middle;}
-.copy-table tr:hover td{background:rgba(255,255,255,0.03);}
-.copy-rank{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:4px;font-size:11px;font-weight:700;flex-shrink:0;}
-.copy-rank.r1{background:#ffd700;color:#000;}
-.copy-rank.r2{background:#c0c0c0;color:#000;}
-.copy-rank.r3{background:#cd7f32;color:#fff;}
-.copy-rank.ro{background:rgba(255,255,255,0.1);color:var(--sub);}
-.copy-title-cell{display:flex;align-items:center;gap:8px;}
-.copy-title-text{color:rgba(255,255,255,0.85);line-height:1.4;word-break:break-all;}
-.copy-mats-preview{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
-.copy-mat-thumb{width:32px;height:32px;object-fit:cover;border-radius:3px;cursor:pointer;transition:transform .15s;}
-.copy-mat-thumb:hover{transform:scale(1.3);z-index:10;position:relative;}
-.copy-mat-ph{width:32px;height:32px;background:rgba(255,255,255,0.08);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:var(--sub);}
-.copy-val{font-weight:600;color:rgba(255,255,255,0.9);}
-.copy-sub{font-size:11px;color:var(--sub);}
-.copy-bar-wrap{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;margin-top:3px;width:80px;}
-.copy-bar{height:4px;border-radius:2px;}
-.copy-empty{padding:40px;text-align:center;color:var(--sub);font-size:13px;}
+
+
+/* [v7] 已清理重复 .sub-tab-bar/.sub-tab 大号版定义 */
+
+
+
+
+
+
+
+
+
+
+
+
 
 </style>
 </head>
 <body>
 <nav class="nav">
-  <div class="nav-logo">奥星热浪 <em>·</em> 营销数据看板</div>
+  <div class="nav-logo">奥星热浪 <em>·</em> 营销数据看板 <span style="font-size:9px;opacity:.4;font-weight:400;vertical-align:middle">v7</span></div>
   <div class="tabs">
     <button class="tab on" data-ch="wx" onclick="switchTab('wx',this)">📰 微信</button>
     <button class="tab" data-ch="qq"  onclick="switchTab('qq',this)">📱 手Q</button>
     <button class="tab" data-ch="copy" onclick="switchTab('copy',this)">✍️ 文案</button>
   </div>
   <div class="nav-meta">2026.01.28 — 04.13 &nbsp;|&nbsp; UV统计</div>
+</nav>
 <div id="notice-bar">
   <span class="notice-icon">📡</span>
-  <span>数据最近更新时间：<span class="notice-time" id="update-time-display">2026-04-17 10:04</span> &nbsp;|&nbsp; 数据范围截至 T-2（含）&nbsp;|&nbsp; 每日 09:00 自动更新</span>
+  <span>数据最近更新时间：<span class="notice-time" id="update-time-display">2026-04-22 10:07</span> &nbsp;|&nbsp; 数据范围截至 T-2（含）&nbsp;|&nbsp; 每日 09:00 自动更新</span>
 </div>
-</nav>
 
 
 <div class="pg-wx-wrapper" id="pg-wx" style="display:block">
@@ -300,12 +516,12 @@ body{background:var(--bg);color:var(--tx);font-family:-apple-system,"PingFang SC
   </div>
   <div class="charts-row">
     <div class="chart-card"><div class="chart-title">每日预约量</div><canvas id="chart-bar-gzh" height="110"></canvas></div>
-    <div class="chart-card"><div class="chart-title">每日预约量趋势</div><canvas id="chart-line-gzh" height="110"></canvas></div>
+    <div class="chart-card"><div class="chart-title">每日 CTR 趋势</div><canvas id="chart-line-gzh" height="110"></canvas></div>
   </div>
   <div class="d7-title">📅 7日明细（每日预约 TOP3）</div>
   <div class="d7-grid" id="d7-gzh"></div>
   <div class="filter-bar">
-    <input id="sq-gzh" placeholder="搜索创意ID或标题文案…" oninput="renderMats('gzh')">
+    <input id="sq-gzh" placeholder="搜索创意ID或标题文案…" oninput="debouncedRender('gzh')">
     <button class="sb sb-gzh on" onclick="setSortMat('gzh','rsv',this)">预约↓</button>
     <button class="sb sb-gzh" onclick="setSortMat('gzh','ctr',this)">CTR↓</button>
     <button class="sb sb-gzh" onclick="setSortMat('gzh','daily_avg',this)">日均预约↓</button>
@@ -316,16 +532,18 @@ body{background:var(--bg);color:var(--tx);font-family:-apple-system,"PingFang SC
   <div class="date-filter-row">
     <span class="date-filter">
       <span style="font-size:11px;color:rgba(255,255,255,0.4);">上线时间</span>
-      <input type="date" id="df-start-gzh" onchange="filterByDate('gzh')">
+      <input type="date" id="df-start-gzh" onchange="if(document.getElementById('df-end-gzh').value) filterByDate('gzh')">
       <span style="color:rgba(255,255,255,0.3);">~</span>
-      <input type="date" id="df-end-gzh" onchange="filterByDate('gzh')">
+      <input type="date" id="df-end-gzh" onchange="if(document.getElementById('df-start-gzh').value) filterByDate('gzh')">
+      <button class="btn-clear" onclick="filterByDate('gzh')" style="background:rgba(124,106,255,0.2);color:rgba(255,255,255,0.8);border-color:rgba(124,106,255,0.4);">确定</button>
       <button class="btn-clear" onclick="clearDateFilter('gzh')">清除</button>
     </span>
     <span class="date-filter" style="margin-left:16px;">
-      <span style="font-size:11px;color:rgba(255,255,255,0.4);">数据时间</span>
-      <input type="date" id="dt-start-gzh" onchange="filterByDataDate('gzh')">
+      <span style="font-size:11px;color:rgba(255,255,255,0.4);" title="按素材首次出现日期过滤，仅为近似范围">数据时间 ⓘ</span>
+      <input type="date" id="dt-start-gzh" onchange="if(document.getElementById('dt-end-gzh').value) filterByDataDate('gzh')">
       <span style="color:rgba(255,255,255,0.3);">~</span>
-      <input type="date" id="dt-end-gzh" onchange="filterByDataDate('gzh')">
+      <input type="date" id="dt-end-gzh" onchange="if(document.getElementById('dt-start-gzh').value) filterByDataDate('gzh')">
+      <button class="btn-clear" onclick="filterByDataDate('gzh')" style="background:rgba(124,106,255,0.2);color:rgba(255,255,255,0.8);border-color:rgba(124,106,255,0.4);">确定</button>
       <button class="btn-clear" onclick="clearDataDateFilter('gzh')">清除</button>
     </span>
   </div>
@@ -348,12 +566,12 @@ body{background:var(--bg);color:var(--tx);font-family:-apple-system,"PingFang SC
   </div>
   <div class="charts-row">
     <div class="chart-card"><div class="chart-title">每日点击量</div><canvas id="chart-bar-rd" height="110"></canvas></div>
-    <div class="chart-card"><div class="chart-title">每日点击量趋势</div><canvas id="chart-line-rd" height="110"></canvas></div>
+    <div class="chart-card"><div class="chart-title">每日 CTR 趋势</div><canvas id="chart-line-rd" height="110"></canvas></div>
   </div>
   <div class="d7-title">📅 7日明细（每日点击 TOP3）</div>
   <div class="d7-grid" id="d7-rd"></div>
   <div class="filter-bar">
-    <input id="sq-rd" placeholder="搜索创意ID或标题文案…" oninput="renderMats('rd')">
+    <input id="sq-rd" placeholder="搜索创意ID或标题文案…" oninput="debouncedRender('rd')">
     <button class="sb sb-rd on" onclick="setSortMat('rd','clk',this)">点击↓</button>
     <button class="sb sb-rd" onclick="setSortMat('rd','ctr',this)">CTR↓</button>
     <button class="sb sb-rd" onclick="setSortMat('rd','daily_avg',this)">日均预约↓</button>
@@ -364,16 +582,18 @@ body{background:var(--bg);color:var(--tx);font-family:-apple-system,"PingFang SC
   <div class="date-filter-row">
     <span class="date-filter">
       <span style="font-size:11px;color:rgba(255,255,255,0.4);">上线时间</span>
-      <input type="date" id="df-start-rd" onchange="filterByDate('rd')">
+      <input type="date" id="df-start-rd" onchange="if(document.getElementById('df-end-rd').value) filterByDate('rd')">
       <span style="color:rgba(255,255,255,0.3);">~</span>
-      <input type="date" id="df-end-rd" onchange="filterByDate('rd')">
+      <input type="date" id="df-end-rd" onchange="if(document.getElementById('df-start-rd').value) filterByDate('rd')">
+      <button class="btn-clear" onclick="filterByDate('rd')" style="background:rgba(0,229,197,0.15);color:rgba(255,255,255,0.8);border-color:rgba(0,229,197,0.3);">确定</button>
       <button class="btn-clear" onclick="clearDateFilter('rd')">清除</button>
     </span>
     <span class="date-filter" style="margin-left:16px;">
-      <span style="font-size:11px;color:rgba(255,255,255,0.4);">数据时间</span>
-      <input type="date" id="dt-start-rd" onchange="filterByDataDate('rd')">
+      <span style="font-size:11px;color:rgba(255,255,255,0.4);" title="按素材首次出现日期过滤，仅为近似范围">数据时间 ⓘ</span>
+      <input type="date" id="dt-start-rd" onchange="if(document.getElementById('dt-end-rd').value) filterByDataDate('rd')">
       <span style="color:rgba(255,255,255,0.3);">~</span>
-      <input type="date" id="dt-end-rd" onchange="filterByDataDate('rd')">
+      <input type="date" id="dt-end-rd" onchange="if(document.getElementById('dt-start-rd').value) filterByDataDate('rd')">
+      <button class="btn-clear" onclick="filterByDataDate('rd')" style="background:rgba(0,229,197,0.15);color:rgba(255,255,255,0.8);border-color:rgba(0,229,197,0.3);">确定</button>
       <button class="btn-clear" onclick="clearDataDateFilter('rd')">清除</button>
     </span>
   </div>
@@ -402,7 +622,7 @@ body{background:var(--bg);color:var(--tx);font-family:-apple-system,"PingFang SC
   <div class="d7-title">📅 7日明细（每日预约 TOP3）</div>
   <div class="d7-grid" id="d7-qq"></div>
   <div class="filter-bar">
-    <input id="sq-qq" placeholder="搜索素材ID或计划名称…" oninput="renderMats('qq')">
+    <input id="sq-qq" placeholder="搜索素材ID或计划名称…" oninput="debouncedRender('qq')">
     <button class="sb sb-qq on" onclick="setSortMat('qq','exp',this)">曝光↓</button>
     <button class="sb sb-qq" onclick="setSortMat('qq','clk',this)">点击↓</button>
     <button class="sb sb-qq" onclick="setSortMat('qq','rsv',this)">预约↓</button>
@@ -413,16 +633,18 @@ body{background:var(--bg);color:var(--tx);font-family:-apple-system,"PingFang SC
   <div class="date-filter-row">
     <span class="date-filter">
       <span style="font-size:11px;color:rgba(255,255,255,0.4);">上线时间</span>
-      <input type="date" id="df-start-qq" onchange="filterByDate('qq')">
+      <input type="date" id="df-start-qq" onchange="if(document.getElementById('df-end-qq').value) filterByDate('qq')">
       <span style="color:rgba(255,255,255,0.3);">~</span>
-      <input type="date" id="df-end-qq" onchange="filterByDate('qq')">
+      <input type="date" id="df-end-qq" onchange="if(document.getElementById('df-start-qq').value) filterByDate('qq')">
+      <button class="btn-clear" onclick="filterByDate('qq')" style="background:rgba(255,184,0,0.15);color:rgba(255,255,255,0.8);border-color:rgba(255,184,0,0.3);">确定</button>
       <button class="btn-clear" onclick="clearDateFilter('qq')">清除</button>
     </span>
     <span class="date-filter" style="margin-left:16px;">
-      <span style="font-size:11px;color:rgba(255,255,255,0.4);">数据时间</span>
-      <input type="date" id="dt-start-qq" onchange="filterByDataDate('qq')">
+      <span style="font-size:11px;color:rgba(255,255,255,0.4);" title="按素材首次出现日期过滤，仅为近似范围">数据时间 ⓘ</span>
+      <input type="date" id="dt-start-qq" onchange="if(document.getElementById('dt-end-qq').value) filterByDataDate('qq')">
       <span style="color:rgba(255,255,255,0.3);">~</span>
-      <input type="date" id="dt-end-qq" onchange="filterByDataDate('qq')">
+      <input type="date" id="dt-end-qq" onchange="if(document.getElementById('dt-start-qq').value) filterByDataDate('qq')">
+      <button class="btn-clear" onclick="filterByDataDate('qq')" style="background:rgba(255,184,0,0.15);color:rgba(255,255,255,0.8);border-color:rgba(255,184,0,0.3);">确定</button>
       <button class="btn-clear" onclick="clearDataDateFilter('qq')">清除</button>
     </span>
   </div>
@@ -434,16 +656,17 @@ body{background:var(--bg);color:var(--tx);font-family:-apple-system,"PingFang SC
 <div class="pg" id="pg-copy" style="display:none">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
     <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,0.85);">文案看板 &nbsp;<span style="font-size:11px;font-weight:400;color:var(--sub)">同一文案下所有素材数据之和</span></div>
-    <div style="display:flex;gap:8px;align-items:center;">
+    <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
       <span style="font-size:11px;color:var(--sub)">渠道：</span>
-      <button class="sub-tab on" data-copy-ch="gzh" onclick="switchCopyCh('gzh',this)">📰 公众号</button>
-      <button class="sub-tab" data-copy-ch="rd" onclick="switchCopyCh('rd',this)">🔴 红点</button>
-      <button class="sub-tab" data-copy-ch="qq" onclick="switchCopyCh('qq',this)">📱 手Q</button>
+      <button class="sub-tab on" data-copy-ch="all"  onclick="switchCopyCh('all',this)">🌐 全渠道</button>
+      <button class="sub-tab" data-copy-ch="gzh" onclick="switchCopyCh('gzh',this)">📰 公众号</button>
+      <button class="sub-tab" data-copy-ch="rd"  onclick="switchCopyCh('rd',this)">🔴 红点</button>
+      <button class="sub-tab" data-copy-ch="qq"  onclick="switchCopyCh('qq',this)">📱 手Q</button>
       <span style="font-size:11px;color:var(--sub);margin-left:10px;">排序：</span>
-      <button class="sub-tab on" id="copy-sort-rsv" onclick="setCopySort('rsv',this)">预约↓</button>
-      <button class="sub-tab" id="copy-sort-daily" onclick="setCopySort('daily_avg',this)">日均↓</button>
-      <button class="sub-tab" id="copy-sort-exp" onclick="setCopySort('exp',this)">曝光↓</button>
-      <button class="sub-tab" id="copy-sort-cnt" onclick="setCopySort('cnt',this)">素材数↓</button>
+      <button class="sub-tab on" id="copy-sort-rsv"   onclick="setCopySort('rsv_total',this)">总预约↓</button>
+      <button class="sub-tab" id="copy-sort-daily"    onclick="setCopySort('daily_avg',this)">日均↓</button>
+      <button class="sub-tab" id="copy-sort-exp"      onclick="setCopySort('exp',this)">曝光↓</button>
+      <button class="sub-tab" id="copy-sort-cnt"      onclick="setCopySort('cnt',this)">素材数↓</button>
     </div>
   </div>
   <div id="copy-table-wrap"></div>
@@ -474,6 +697,13 @@ if(typeof Chart === 'undefined' && typeof module !== 'undefined' && module.expor
 }
 
 
+/* ── debounce ── */
+var _debounceTimers={};
+function debouncedRender(ch){
+  clearTimeout(_debounceTimers[ch]);
+  _debounceTimers[ch]=setTimeout(function(){renderMats(ch);},300);
+}
+
 /* ── utils ── */
 // 图片代理：GitHub Pages 环境下绕过微信CDN防盗链
 function proxyImg(url){
@@ -495,6 +725,8 @@ function switchTab(ch, btn){
     var el=document.getElementById(id);
     if(el) el.style.display='none';
   });
+  // 离开文案Tab时重置联动标志
+  if(ch !== 'copy') _copyUserSelected = false;
   // 导航高亮
   document.querySelectorAll('.tab[data-ch]').forEach(function(b){b.classList.remove('on');});
   if(btn) btn.classList.add('on');
@@ -512,6 +744,22 @@ function switchTab(ch, btn){
   } else if(ch==='copy'){
     var copyEl=document.getElementById('pg-copy');
     if(copyEl) copyEl.style.display='block';
+    // 联动当前主Tab渠道：wx子tab → gzh/rd，qq → qq
+    var activeMain=document.querySelector('.tab[data-ch].on');
+    var mainCh=activeMain?activeMain.getAttribute('data-ch'):'wx';
+    var inferCh='all';   // 默认全渠道聚合
+    if(mainCh==='qq'){ inferCh='qq'; }
+    else if(mainCh==='wx'){
+      var wxSubActive=document.querySelector('#wx-sub-tabs .sub-tab.on');
+      inferCh=wxSubActive?wxSubActive.getAttribute('data-sub'):'gzh';
+    }
+    // 只在没有用户主动选过渠道时才联动（防止覆盖用户意图）
+    if(!_copyUserSelected){
+      _copyCh=inferCh;
+      document.querySelectorAll('[data-copy-ch]').forEach(function(b){
+        b.classList.toggle('on', b.getAttribute('data-copy-ch')===inferCh);
+      });
+    }
     renderCopyBoard();
   } else {
     var target=document.getElementById('pg-'+ch);
@@ -549,7 +797,8 @@ function rankItem(m, mainField, mainLabel, accentColor, tagClass){
     ? '<img class="ri-img" src="'+proxyImg(m.img)+'" alt="" onerror="this.outerHTML=\'<div class=ri-img-ph>无图</div>\'">'
     : '<div class="ri-img-ph">#'+m.id+'</div>';
   var mainVal = mainField==='cost' ? yuan(m[mainField]) : f(m[mainField]);
-  return '<div class="rank-item">'
+  var chKey=tagClass==='id-tag'?'gzh':tagClass==='id-tag id-tag-rd'?'rd':'qq';
+  return '<div class="rank-item" onclick="openModal(\''+m.id+'\',\''+chKey+'\')">'
     +'<div class="rn '+rnCls+'">'+m.rank+'</div>'
     +imgH
     +'<div class="ri-info">'
@@ -576,14 +825,15 @@ function mk(id,cfg){try{if(typeof Chart==='undefined'){console.warn('Chart.js未
 function renderCharts(ch){
   try {
   var tr, barColor, lineColor, barField, lineField, barLabel, lineLabel;
-  if(ch==='gzh'){tr=GZH_TREND;barColor='#5b9cf6';lineColor='#ff9f43';barField='rsv';lineField='rsv';barLabel='每日预约量';lineLabel='预约量';}
-  else if(ch==='rd'){tr=RD_TREND;barColor='#00e5c5';lineColor='#00e5c5';barField='clk';lineField='clk';barLabel='每日点击量';lineLabel='点击量';}
+  if(ch==='gzh'){tr=GZH_TREND;barColor='#5b9cf6';lineColor='#ff9f43';barField='rsv';lineField='ctr';barLabel='每日预约量';lineLabel='CTR';}
+  else if(ch==='rd'){tr=RD_TREND;barColor='#00e5c5';lineColor='#7c6aff';barField='clk';lineField='ctr';barLabel='每日点击量';lineLabel='CTR';}
   else{tr=QQ_TREND;barColor='#ff9f43';lineColor='#e040fb';barField='exp';lineField='rsv';barLabel='每日曝光量';lineLabel='预约量';}
 
   mk('chart-bar-'+ch,{type:'bar',data:{labels:tr.dates.map(fmtDate),datasets:[{label:barLabel,data:tr[barField],backgroundColor:barColor+'bb',borderRadius:3}]},
     options:{plugins:{legend:{labels:{color:tc,font:{size:10}}}},scales:{x:{ticks:{color:tc,maxTicksLimit:16,font:{size:9}},grid:{color:gc}},y:{ticks:{color:tc,font:{size:9}},grid:{color:gc}}}}});
+  var isCTR=(lineField==='ctr');
   mk('chart-line-'+ch,{type:'line',data:{labels:tr.dates.map(fmtDate),datasets:[{label:lineLabel,data:tr[lineField],borderColor:lineColor,backgroundColor:lineColor+'18',tension:.35,fill:true,pointRadius:2,pointHoverRadius:5}]},
-    options:{interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{color:tc,font:{size:10}}},tooltip:{enabled:true,backgroundColor:'rgba(20,20,20,0.9)',titleColor:'#fff',bodyColor:'#ddd',borderColor:'rgba(255,255,255,0.15)',borderWidth:1,padding:8,callbacks:{label:function(ctx){var v=ctx.parsed.y;return ' '+(v>=10000?(v/10000).toFixed(1)+'万':v.toLocaleString());},title:function(items){return items[0].label;}}}},scales:{x:{ticks:{color:tc,maxTicksLimit:16,font:{size:9}},grid:{color:gc}},y:{ticks:{color:tc,font:{size:9}},grid:{color:gc}}}}});
+    options:{interaction:{mode:'index',intersect:false},plugins:{legend:{labels:{color:tc,font:{size:10}}},tooltip:{enabled:true,backgroundColor:'rgba(20,20,20,0.9)',titleColor:'#fff',bodyColor:'#ddd',borderColor:'rgba(255,255,255,0.15)',borderWidth:1,padding:8,callbacks:{label:function(ctx){var v=ctx.parsed.y;if(isCTR)return ' '+v.toFixed(2)+'%';return ' '+(v>=10000?(v/10000).toFixed(1)+'万':v.toLocaleString());},title:function(items){return items[0].label;}}}},scales:{x:{ticks:{color:tc,maxTicksLimit:16,font:{size:9}},grid:{color:gc}},y:{ticks:{color:tc,font:{size:9},callback:function(v){return isCTR?v.toFixed(1)+'%':v;}},grid:{color:gc}}}}});
   } catch(e){ console.warn('renderCharts error ('+ch+'):', e.message); }
 }
 
@@ -733,7 +983,7 @@ function renderMats(ch){
       +'<div class="mm"><div class="v">'+f(m.rsv)+'</div><div class="l">预约</div></div>'
       +'</div>'
       +'<div class="mg2">'
-      +'<div class="mm"><div class="v">'+f(m.clk)+'</div><div class="l">点击</div></div>'
+      +'<div class="mm"><div class="v">'+(ch==='qq'&&m.clk===0&&m.pos==='banner'?'<span title="顶部Banner资源位不统计点击数" style="color:var(--sub);font-size:13px">—</span>':f(m.clk))+'</div><div class="l">点击</div></div>'
       +(ch==='qq'?'<div class="mm"><div class="v" style="color:'+ac+'">'+(m.daily_avg!=null?m.daily_avg.toFixed(1):'-')+'</div><div class="l">日均预约</div></div>':(m.cost!=null?'<div class="mm"><div class="v">'+yuan(m.cost||0)+'</div><div class="l">消耗</div></div>':'<div class="mm"><div class="v" style="color:'+ac+'">'+(m.daily_avg!=null?m.daily_avg.toFixed(1):'-')+'</div><div class="l">日均预约</div></div>'))
       +'</div>'
       +'</div></div>';
@@ -751,14 +1001,31 @@ function openModal(id,ch){
   document.getElementById('mo-id').innerHTML='<span style="color:'+ac+'">创意ID: '+m.id+'</span>&nbsp;&nbsp;|&nbsp;&nbsp;'+chN+'&nbsp;&nbsp;|&nbsp;&nbsp;排名 #'+m.rank;
   document.getElementById('mo-title').textContent=m.title||'（无标题）';
   var img=document.getElementById('mo-img');img.src=proxyImg(m.img)||'';img.style.display=m.img?'block':'none';
+  var isBanner=(ch==='qq'&&m.pos==='banner');
   var mets=[
-    {v:f(m.exp),l:'曝光量'},{v:f(m.clk),l:'点击量'},{v:p(m.ctr),l:'外层CTR'},
+    {v:f(m.exp),l:'曝光量'},
+    {v:isBanner?'—':f(m.clk),l:'点击量'},
+    {v:isBanner?'—':p(m.ctr),l:'外层CTR'},
     {v:f(m.rsv),l:'预约量'},{v:p(m.cvr),l:'CVR'},
   ];
   if(m.cost!=null)mets.push({v:yuan(m.cost||0),l:'消耗'});
   else mets.push({v:p(m.inner_ctr||0),l:'内层CTR'});
   document.getElementById('mo-mets').innerHTML=mets.map(function(x){return'<div class="mcell"><div class="v">'+x.v+'</div><div class="l">'+x.l+'</div></div>';}).join('');
-  document.getElementById('mo-meta').innerHTML='<b>素材ID</b> '+m.id;
+  // 投放天数
+  var dayCount='-';
+  if(m.first_date){
+    try{
+      var fd=new Date(m.first_date);var now=new Date();
+      dayCount=Math.max(1,Math.round((now-fd)/(1000*60*60*24)))+'天';
+    }catch(e){}
+  }
+  var chLabel={gzh:'微信公众号',rd:'微信红点',qq:'手Q'}[ch]||ch;
+  document.getElementById('mo-meta').innerHTML=
+    '<b>渠道</b> '+chLabel+'&nbsp;&nbsp;|&nbsp;&nbsp;'
+    +'<b>素材ID</b> '+m.id+'&nbsp;&nbsp;|&nbsp;&nbsp;'
+    +'<b>上线时间</b> '+(m.first_date||'—')+'&nbsp;&nbsp;|&nbsp;&nbsp;'
+    +'<b>投放天数</b> '+dayCount
+    +(m.pos_label?'&nbsp;&nbsp;|&nbsp;&nbsp;<b>资源位</b> '+m.pos_label:'');
   var ub=document.getElementById('mo-url');ub.textContent=m.img||'（无图片URL）';
   document.getElementById('modal').classList.add('open');
 }
@@ -790,8 +1057,6 @@ function setQQPos(pos, btn){
     {v:f(d.kpi.clk),l:'总外层点击'},
     {v:p(d.kpi.ctr),l:'外层CTR'},
     {v:f(d.kpi.rsv),l:'总预约'},
-    {v:yuan(d.kpi.cost),l:'总消耗'},
-    {v:'¥'+d.kpi.cpa,l:'CPA(元/预约)'},
     {v:String(d.kpi.mat_count),l:'素材数'},
   ],'var(--qq)');
 
@@ -876,17 +1141,7 @@ function setQQPos(pos, btn){
   renderD7('rd');
   renderMats('rd');
 
-  // QQ KPI
-  renderKbar('kbar-qq',[
-    {v:QQ_KPI.cnt+'个',l:'素材总数'},
-    {v:f(QQ_KPI.exp),l:'总外层曝光'},
-    {v:f(QQ_KPI.clk),l:'总外层点击'},
-    {v:p(QQ_KPI.ctr),l:'外层CTR'},
-    {v:f(QQ_KPI.rsv),l:'总预约'},
-    {v:yuan(QQ_KPI.cost),l:'总消耗'},
-    {v:'¥'+QQ_KPI.cpa,l:'CPA (元/预约)'},
-    {v:'#'+QQ_KPI.top_exp_id,l:'曝光冠军'},
-  ],'var(--qq)');
+  // QQ KPI — 由 setQQPos('all') 统一初始化，不在此重复渲染
   setQQPos('all', document.querySelector('#qq-pos-tabs .sub-tab') || document.querySelector('#qq-pos-tabs .pos-tab'));
   // 手Q资源位初始化（用QQ_DATA['all']）
   if(typeof QQ_DATA !== 'undefined' && QQ_DATA['all']){
@@ -896,8 +1151,6 @@ function setQQPos(pos, btn){
       {v:(function(v){return v>=10000?(v/10000).toFixed(1)+'万':String(v);})(_d.kpi.clk||0), l:'总外层点击'},
       {v:(_d.kpi.ctr||0)+'%', l:'外层CTR'},
       {v:String(_d.kpi.rsv||0), l:'总预约'},
-      {v:'¥'+(_d.kpi.cost||0), l:'总消耗'},
-      {v:'¥'+(_d.kpi.cpa||0), l:'CPA(元/预约)'},
       {v:String(_d.kpi.mat_count||0), l:'素材数'},
     ], '#E6A817');
     if(_d.top5) renderRankList('rank-total-qq', _d.top5.slice(0,5).map(function(m,i){return Object.assign({},m,{rank:i+1});}), 'rsv','预约','#E6A817','tag-qq');
@@ -917,11 +1170,13 @@ function setQQPos(pos, btn){
 /* ══════════════════════════════════════════════
    文案看板
    ══════════════════════════════════════════════ */
-var _copyCh = 'gzh';          // 当前选中渠道
-var _copySort = 'rsv';        // 排序字段
+var _copyCh = 'all';           // 默认全渠道聚合
+var _copySort = 'rsv_total';   // 默认按总预约排序
+var _copyUserSelected = false;
 
 function switchCopyCh(ch, btn){
   _copyCh = ch;
+  _copyUserSelected = true;
   document.querySelectorAll('[data-copy-ch]').forEach(function(b){b.classList.remove('on');});
   if(btn) btn.classList.add('on');
   renderCopyBoard();
@@ -933,104 +1188,169 @@ function setCopySort(field, btn){
   renderCopyBoard();
 }
 
+/* ── 从 title 提取文案 key（去掉 #ID · 前缀） ── */
+function _copyKey(m){
+  var t = (m.title||'').trim();
+  var dotIdx = t.indexOf('·');
+  if(dotIdx >= 0) return t.slice(dotIdx+1).trim();
+  return t || '（无标题）';
+}
+
 function renderCopyBoard(){
   var wrap = document.getElementById('copy-table-wrap');
   if(!wrap) return;
 
-  // 取数据
-  var mats;
-  var acColor;
-  var isQQ = (_copyCh === 'qq');
-  if(_copyCh === 'gzh'){ mats = GZH_MATS; acColor = 'var(--gzh)'; }
-  else if(_copyCh === 'rd'){ mats = RD_MATS; acColor = 'var(--rd)'; }
-  else { mats = QQ_MATS; acColor = 'var(--qq)'; }
+  var showAll = (_copyCh === 'all');
 
-  // 手Q的title是计划ID，按资源位分组比较有意义
-  // 微信/红点按真实文案聚合
-  var grouped = {};
-  mats.forEach(function(m){
-    var key;
-    if(isQQ){
-      // title格式 "#40215195 · 公众号Ark"，取 · 后面的资源位名称
-      var t = (m.title||'').trim();
-      var dotIdx = t.indexOf('·');
-      key = dotIdx >= 0 ? t.slice(dotIdx+1).trim() : (m.pos_label || m.pos || '其他');
-    } else {
-      key = (m.title||'（无标题）').trim();
-    }
-    if(!grouped[key]) grouped[key] = [];
-    grouped[key].push(m);
-  });
+  /* ── 构建全渠道聚合表（按文案 key） ── */
+  // 微信公众号 / 红点 各按 title 聚合
+  // 手Q 因为 title 格式是 "#ID · 资源位"，排除在跨渠道文案聚合之外
+  // 全渠道视图：只聚合 GZH + RD（有真实文案），手Q单独一列标注
 
-  // 聚合统计
+  var grouped = {}; // key → {gzh:[], rd:[], qq:[]}
+
+  function addToGroup(mats, chKey){
+    mats.forEach(function(m){
+      var key = _copyKey(m);
+      if(!grouped[key]) grouped[key] = {gzh:[], rd:[], qq:[]};
+      grouped[key][chKey].push(m);
+    });
+  }
+
+  if(showAll){
+    addToGroup(GZH_MATS, 'gzh');
+    addToGroup(RD_MATS,  'rd');
+    // 手Q title 格式不同，单独计总预约贡献
+    // 手Q 按资源位聚合后归入特殊 key（不与文案对齐）
+    // 这里不纳入文案聚合，hand Q 数据在总预约列单独注释
+  } else if(_copyCh === 'gzh'){
+    addToGroup(GZH_MATS, 'gzh');
+  } else if(_copyCh === 'rd'){
+    addToGroup(RD_MATS,  'rd');
+  } else if(_copyCh === 'qq'){
+    // 手Q：按资源位分组
+    QQ_MATS.forEach(function(m){
+      var key = _copyKey(m);
+      if(!grouped[key]) grouped[key] = {gzh:[], rd:[], qq:[]};
+      grouped[key]['qq'].push(m);
+    });
+  }
+
+  /* ── 聚合统计 ── */
   var rows = Object.keys(grouped).map(function(title){
-    var items = grouped[title];
-    var rsv = items.reduce(function(s,x){return s+(x.rsv||0);}, 0);
-    var exp = items.reduce(function(s,x){return s+(x.exp||0);}, 0);
-    var clk = items.reduce(function(s,x){return s+(x.clk||0);}, 0);
-    var daily_avg_sum = items.reduce(function(s,x){return s+(x.daily_avg||0);}, 0);
-    var daily_avg = items.length > 0 ? daily_avg_sum / items.length : 0;
-    // CTR = clk/exp
-    var ctr = exp > 0 ? (clk/exp*100) : 0;
-    return {title:title, cnt:items.length, rsv:rsv, exp:exp, clk:clk, ctr:ctr, daily_avg:daily_avg, items:items};
+    var gList = grouped[title].gzh;
+    var rList = grouped[title].rd;
+    var qList = grouped[title].qq;
+    var allItems = gList.concat(rList).concat(qList);
+
+    function sumF(arr, field){ return arr.reduce(function(s,x){return s+(x[field]||0);},0); }
+    function avgF(arr, field){ return arr.length>0?sumF(arr,field)/arr.length:0; }
+
+    var rsv_gzh   = sumF(gList,'rsv');
+    var rsv_rd    = sumF(rList,'rsv');
+    var rsv_qq    = sumF(qList,'rsv');
+    var rsv_total = rsv_gzh + rsv_rd + rsv_qq;
+
+    var exp   = sumF(allItems,'exp');
+    var clk   = sumF(allItems,'clk');
+    var ctr   = exp>0?(clk/exp*100):0;
+    var daily_avg = avgF(allItems,'daily_avg');
+    var cnt   = allItems.length;
+
+    return {
+      title:title, cnt:cnt,
+      rsv_total:rsv_total, rsv_gzh:rsv_gzh, rsv_rd:rsv_rd, rsv_qq:rsv_qq,
+      exp:exp, clk:clk, ctr:ctr, daily_avg:daily_avg,
+      // 兼容旧排序字段
+      rsv: rsv_total, exp_val:exp,
+      gzh_items:gList, rd_items:rList, qq_items:qList, items:allItems
+    };
   });
 
-  // 排序
+  /* ── 排序 ── */
   var sf = _copySort;
-  rows.sort(function(a,b){
-    return (b[sf]||0) - (a[sf]||0);
-  });
+  var sfMap = {rsv:'rsv_total', rsv_total:'rsv_total', daily_avg:'daily_avg', exp:'exp', cnt:'cnt'};
+  var sfKey = sfMap[sf] || sf;
+  rows.sort(function(a,b){ return (b[sfKey]||0)-(a[sfKey]||0); });
 
-  // 最大值（用于进度条）
-  var maxRsv = rows.length > 0 ? rows[0].rsv : 1;
-  var maxDaily = rows.reduce(function(m,r){return Math.max(m,r.daily_avg);},0)||1;
-
-  if(rows.length === 0){
-    wrap.innerHTML = '<div class="copy-empty">暂无数据</div>';
+  if(rows.length===0){
+    wrap.innerHTML='<div class="copy-empty">暂无数据</div>';
     return;
   }
 
-  var rnCls = function(i){ return i===0?'r1':i===1?'r2':i===2?'r3':'ro'; };
+  var maxTotal = rows[0].rsv_total || 1;
+  var rnCls = function(i){return i===0?'r1':i===1?'r2':i===2?'r3':'ro';};
 
-  var html = '<table class="copy-table">'
-    + '<thead><tr>'
+  /* ── 渠道对比 mini bar ── */
+  function chBar(rsv, color, maxVal){
+    if(!rsv) return '<span style="color:var(--sub);font-size:11px">—</span>';
+    var w = maxVal>0?Math.max(4,Math.round(rsv/maxVal*60)):0;
+    return '<div style="display:flex;align-items:center;gap:5px">'
+      +'<span style="font-size:12px;font-weight:700;color:'+color+'">'+f(rsv)+'</span>'
+      +'<div style="flex:1;max-width:'+w+'px;height:3px;background:'+color+';border-radius:2px;opacity:.7"></div>'
+      +'</div>';
+  }
+
+  /* ── 表头 ── */
+  var html = '<table class="copy-table"><thead><tr>'
     + '<th style="width:32px">#</th>'
-    + (isQQ ? '<th>资源位</th>' : '<th>文案标题</th>')
-    + '<th style="width:60px">素材数</th>'
-    + '<th style="width:90px">总预约</th>'
-    + '<th style="width:90px">日均预约</th>'
-    + '<th style="width:80px">总曝光</th>'
-    + '<th style="width:60px">CTR</th>'
-    + '<th>素材预览</th>'
-    + '</tr></thead><tbody>';
+    + '<th>文案标题</th>'
+    + '<th style="width:52px">素材数</th>'
+    + '<th style="width:100px">总预约</th>';
 
+  if(showAll){
+    html += '<th style="width:88px"><span style="color:var(--gzh)">公众号</span></th>'
+          + '<th style="width:88px"><span style="color:var(--rd)">红点</span></th>';
+  }
+
+  html += '<th style="width:80px">日均预约</th>'
+        + '<th style="width:70px">总曝光</th>'
+        + '<th style="width:52px">CTR</th>'
+        + '<th>素材预览</th>'
+        + '</tr></thead><tbody>';
+
+  /* ── 行渲染 ── */
   rows.forEach(function(row, i){
-    var rBar = maxRsv > 0 ? (row.rsv / maxRsv * 100).toFixed(1) : 0;
-    var dBar = maxDaily > 0 ? (row.daily_avg / maxDaily * 100).toFixed(1) : 0;
+    var rBar = (row.rsv_total/maxTotal*100).toFixed(1);
 
-    // 素材缩略图（最多8张，按预约排序）
-    var sortedItems = row.items.slice().sort(function(a,b){return (b.rsv||0)-(a.rsv||0);});
-    var thumbs = sortedItems.slice(0,8).map(function(m){
+    // 素材缩略图（全渠道合并，按预约倒序，最多8张）
+    var allSorted = row.items.slice().sort(function(a,b){return (b.rsv||0)-(a.rsv||0);});
+    var chOfItem = function(m){
+      if(row.gzh_items.indexOf(m)>=0) return 'gzh';
+      if(row.rd_items.indexOf(m)>=0)  return 'rd';
+      return 'qq';
+    };
+    var thumbs = allSorted.slice(0,8).map(function(m){
+      var ch2 = chOfItem(m);
       if(m.img){
-        return '<img class="copy-mat-thumb" src="'+proxyImg(m.img)+'" title="#'+m.id+' '+m.title+'" onerror="this.outerHTML=\'<div class=copy-mat-ph>无图</div>\'" onclick="openModal(\''+m.id+'\',\''+_copyCh+'\')">';
+        return '<img class="copy-mat-thumb" src="'+proxyImg(m.img)+'" title="#'+m.id+' ('+{gzh:'公众号',rd:'红点',qq:'手Q'}[ch2]+')" onerror="this.outerHTML=\'<div class=copy-mat-ph>无图</div>\'" onclick="openModal(\''+m.id+'\',\''+ch2+'\')">';
       }
       return '<div class="copy-mat-ph">#'+m.id+'</div>';
     }).join('');
 
+    var acColor = showAll?'var(--tx)':(_copyCh==='gzh'?'var(--gzh)':_copyCh==='rd'?'var(--rd)':'var(--qq)');
+
     html += '<tr>'
       + '<td><span class="copy-rank '+rnCls(i)+'">'+(i+1)+'</span></td>'
       + '<td><div class="copy-title-cell"><div>'
-      + '<div class="copy-title-text" style="font-size:13px">'+row.title+'</div>'
+      + '<div class="copy-title-text collapsed" style="font-size:13px" onclick="this.classList.toggle(\'collapsed\');this.classList.toggle(\'expanded\')">'+row.title+'</div>'
       + '</div></div></td>'
       + '<td><span class="copy-val">'+row.cnt+'</span></td>'
-      + '<td><div class="copy-val" style="color:'+acColor+'">'+f(row.rsv)+'</div>'
-      + '<div class="copy-bar-wrap"><div class="copy-bar" style="width:'+rBar+'%;background:'+acColor+'"></div></div></td>'
-      + '<td><div class="copy-val">'+row.daily_avg.toFixed(1)+'</div>'
-      + '<div class="copy-bar-wrap"><div class="copy-bar" style="width:'+dBar+'%;background:rgba(255,159,67,0.7)"></div></div></td>'
-      + '<td class="copy-sub">'+f(row.exp)+'</td>'
-      + '<td class="copy-sub">'+row.ctr.toFixed(2)+'%</td>'
-      + '<td><div class="copy-mats-preview">'+thumbs+'</div></td>'
-      + '</tr>';
+      + '<td>'
+      +   '<div class="copy-val" style="color:'+acColor+'">'+f(row.rsv_total)+'</div>'
+      +   '<div class="copy-bar-wrap"><div class="copy-bar" style="width:'+rBar+'%;background:'+acColor+'"></div></div>'
+      + '</td>';
+
+    if(showAll){
+      html += '<td>'+chBar(row.rsv_gzh,'var(--gzh)',maxTotal)+'</td>'
+            + '<td>'+chBar(row.rsv_rd, 'var(--rd)', maxTotal)+'</td>';
+    }
+
+    html += '<td><div class="copy-val" style="font-size:12px">'+row.daily_avg.toFixed(1)+'</div></td>'
+          + '<td class="copy-sub">'+f(row.exp)+'</td>'
+          + '<td class="copy-sub">'+row.ctr.toFixed(2)+'%</td>'
+          + '<td><div class="copy-mats-preview">'+thumbs+'</div></td>'
+          + '</tr>';
   });
 
   html += '</tbody></table>';
